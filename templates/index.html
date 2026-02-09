@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAD - Facade Analysis & Design v2.0</title>
+    <link rel="icon" href="../static/fav.png" type="image/png">
+    <!-- <link rel="icon" href="{{ url_for('static', filename='fav.png') }}" type="image/png"> -->
+    <link rel="stylesheet" href="/static/app.css">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}"> -->
+</head>
+
+<body>
+    <header class="topbar" aria-label="Workspace controls">
+        <div class="topbar-left">
+            <div class="logo-badge" aria-label="Facade Report" role="img"></div>
+            <div class="header-btn">
+                <button class="topbar-icon-btn" type="button" data-title="Open" aria-label="Open" id="load-yaml-btn">
+                    <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 19h16a1 1 0 0 0 1-1v-7H9l-2-3H3v10a1 1 0 0 0 1 1Z"></path>
+                        <path d="M4 8V6a1 1 0 0 1 1-1h5.5l2 3H22"></path>
+                    </svg>
+                </button>
+                <button class="topbar-icon-btn" type="button" data-title="Generate" aria-label="Generate" id="generate-yaml-btn">
+                    <svg class="topbar-icon" viewBox="-6 -4 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="icomoon-ignore"> </g> <path d="M20.48 18.613l-1.12 7.84 7.627-1.173-2.987-3.040c1.013-1.867 1.6-3.947 1.6-6.24 0-7.093-5.707-12.8-12.8-12.8v1.067c6.453 0 11.733 5.28 11.733 11.733 0 1.973-0.48 3.787-1.333 5.44l-2.72-2.827zM20.587 25.173l0.64-4.267 3.52 3.627-4.16 0.64z" fill="#000000"> </path> <path d="M1.067 16c0-2.827 1.013-5.387 2.667-7.413l3.253 3.307 1.12-7.84-7.627 1.227 2.453 2.56c-1.813 2.187-2.933 5.067-2.933 8.16 0 7.093 5.707 12.8 12.8 12.8v-1.067c-6.453 0-11.733-5.28-11.733-11.733zM6.827 5.387l-0.64 4.267-3.52-3.627 4.16-0.64z" fill="#000000"> </path> </g></svg>
+                </button>
+                <button class="topbar-icon-btn" type="button" data-title="Save" aria-label="Save" id="download-yaml-btn">
+                    <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 5h12l2 2v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1Z"></path>
+                        <path d="M15 5v6H7V5"></path>
+                        <path d="M12 17.5v.01"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <input type="file" id="yaml-file-input" accept=".yaml,.yml,text/yaml" hidden>
+            <div class="header_projct-name" id="header-project-name">Project Name</div>
+            <div id="status-notification" class="status"></div>
+        </div>
+
+        <div class="topbar-right">
+            <div class="user-license-container">
+                <div>License status:</div>
+                <div class="user-license" aria-label="License status">
+                    <span class="status-dot status-active" aria-hidden="true"></span>
+                    <span class="license-text">Active</span>
+                </div>
+            </div>
+            
+            
+            <div class="right-header-btn">
+                    <button class="header-icon-btn" type="button" aria-label="Open" id="">
+                        <svg class="topbar-icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 19h16a1 1 0 0 0 1-1v-7H9l-2-3H3v10a1 1 0 0 0 1 1Z"></path>
+                            <path d="M4 8V6a1 1 0 0 1 1-1h5.5l2 3H22"></path>
+                        </svg>
+                        <p>Setting</p>
+                    </button>
+                    
+                    <button class="header-icon-btn" type="button" aria-label="Generate" id="">
+                        <svg class="topbar-icon-svg" viewBox="-6 -4 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="icomoon-ignore"> </g> <path d="M20.48 18.613l-1.12 7.84 7.627-1.173-2.987-3.040c1.013-1.867 1.6-3.947 1.6-6.24 0-7.093-5.707-12.8-12.8-12.8v1.067c6.453 0 11.733 5.28 11.733 11.733 0 1.973-0.48 3.787-1.333 5.44l-2.72-2.827zM20.587 25.173l0.64-4.267 3.52 3.627-4.16 0.64z" fill="#000000"> </path> <path d="M1.067 16c0-2.827 1.013-5.387 2.667-7.413l3.253 3.307 1.12-7.84-7.627 1.227 2.453 2.56c-1.813 2.187-2.933 5.067-2.933 8.16 0 7.093 5.707 12.8 12.8 12.8v-1.067c-6.453 0-11.733-5.28-11.733-11.733zM6.827 5.387l-0.64 4.267-3.52-3.627 4.16-0.64z" fill="#000000"> </path> </g></svg>
+                        <p>Support</p>
+                    </button>
+                    
+                    <button class="header-icon-btn" type="button" aria-label="Save" id="">
+                        <svg class="topbar-icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M5 5h12l2 2v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1Z"></path>
+                            <path d="M15 5v6H7V5"></path>
+                            <path d="M12 17.5v.01"></path>
+                        </svg>
+                        <p>Learn</p>
+                    </button>
+            </div>
+            
+            <div class="user-meta" aria-label="Signed-in user">
+                <div class="user-name">Md. Akram Hossain</div>
+                <div class="user-role">Structural Engineer</div>
+            </div>
+            <div class="user-avatar" aria-hidden="true">
+                <img src="{{ url_for('static', filename='dp.jpg') }}" alt="User avatar">
+            </div>
+        </div>
+    </header>
+
+    <aside class="cat-rail" aria-label="Quick actions">
+        <button class="rail-btn" id="figure-status-menubar" type="button" data-title="Status Panel" aria-label="Status Panel">
+            <svg class="rail-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+        <button class="rail-btn theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" data-title="Theme">
+            <svg id="theme-icon-sun" class="theme-icon sun hidden" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"></circle>
+                <line x1="12" y1="2" x2="12" y2="5"></line>
+                <line x1="12" y1="19" x2="12" y2="22"></line>
+                <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"></line>
+                <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"></line>
+                <line x1="2" y1="12" x2="5" y2="12"></line>
+                <line x1="19" y1="12" x2="22" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"></line>
+                <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg id="theme-icon-moon" class="theme-icon moon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+        <button class="rail-btn" id="calculator-btn" type="button" data-title="Open calculator" aria-label="Open calculator">
+            <svg class="rail-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="4" y="3" width="16" height="18" rx="2"></rect>
+                <line x1="4" y1="9" x2="20" y2="9"></line>
+                <line x1="8" y1="13" x2="10" y2="13"></line>
+                <line x1="14" y1="13" x2="16" y2="13"></line>
+                <line x1="8" y1="17" x2="10" y2="17"></line>
+                <line x1="14" y1="17" x2="16" y2="17"></line>
+            </svg>
+        </button>
+        <button class="rail-btn" type="button" data-title="Help" aria-label="Help" id="add-figures-btn">
+            <svg class="rail-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M9.5 9a2.5 2.5 0 0 1 4.5 1.3c0 1.7-2 2.1-2 3.2"></path>
+                <circle cx="12" cy="16.5" r="0.9"></circle>
+            </svg>
+        </button>
+    </aside>
+
+    <div class="input-rail">
+    </div>
+
+    <div class="main__container">
+    </div>
+    
+    <aside class="result-rail">
+    </aside>
+
+
+
+
+
+
+
+    <!-- Error msg modal dialog -->
+    <dialog id="error-dialog" class="custom-warning-modal">
+        <div class="warning-modal-content">
+            <div class="warning-modal-icon">⚠️</div>
+            <p id="warning-modal-message"></p>
+            <button onclick="document.getElementById('error-dialog').close()">OK</button>
+        </div>
+    </dialog>
+
+    <!-- Input Helper Guide Popup -->
+    <div id="input-helper-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Input Guide</h3>
+                <span class="close-modal" id="close-input-helper">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="input-helper-content">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calculator Popup -->
+    <div id="calculator-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="calculator-title">
+        <div class="modal-content-calculator">
+            <div class="modal-header-calculator">
+                <h3 id="calculator-title">Calculator</h3>
+                <span class="close-modal" id="close-calculator">&times;</span>
+            </div>
+            <div class="modal-body-calculator">
+                <div class="calculator">
+                    <div class="calc-display" id="calc-display" aria-live="polite">0</div>
+                    <div class="calc-keys" id="calc-keys">
+                        <button type="button" class="calc-key key-ac" data-key="AC">AC</button>
+                        <button type="button" class="calc-key key-del" data-key="DEL">DEL</button>
+                        <button type="button" class="calc-key key-op" data-key="(">(</button>
+                        <button type="button" class="calc-key key-op" data-key=")">)</button>
+
+                        <button type="button" class="calc-key" data-key="7">7</button>
+                        <button type="button" class="calc-key" data-key="8">8</button>
+                        <button type="button" class="calc-key" data-key="9">9</button>
+                        <button type="button" class="calc-key key-op" data-key="÷">÷</button>
+
+                        <button type="button" class="calc-key" data-key="4">4</button>
+                        <button type="button" class="calc-key" data-key="5">5</button>
+                        <button type="button" class="calc-key" data-key="6">6</button>
+                        <button type="button" class="calc-key key-op" data-key="×">×</button>
+
+                        <button type="button" class="calc-key" data-key="1">1</button>
+                        <button type="button" class="calc-key" data-key="2">2</button>
+                        <button type="button" class="calc-key" data-key="3">3</button>
+                        <button type="button" class="calc-key key-op" data-key="-">-</button>
+
+                        <button type="button" class="calc-key" data-key="0">0</button>
+                        <button type="button" class="calc-key" data-key=".">.</button>
+                        <button type="button" class="calc-key key-eq" data-key="=">=</button>
+                        <button type="button" class="calc-key key-op" data-key="+">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Glass Chart Modal -->
+    <div id="glass-chart-modal" class="glass-chart-modal-overlay">
+        <div class="glass-chart-modal-dialog">
+            <div class="glass-chart-modal-header">
+                <h2 class="glass-chart-modal-title">Glass Reference Chart</h2>
+                <button type="button" class="glass-chart-modal-close" aria-label="Close modal">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="glass-chart-modal-content">
+                <img id="glass-chart-image" src="" alt="Glass chart" style="display:none;">
+                <div id="glass-chart-loading" style="text-align: center; color: var(--text-secondary);">
+                    <p>Loading chart...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
+    <script src="/static/app.js"></script>
+    <!-- <script src="{{ url_for('static', filename='app.js') }}"></script> -->
+    <script src="{{ url_for('static', filename='calculator.js') }}"></script>
+
+</body>
+
+</html>
