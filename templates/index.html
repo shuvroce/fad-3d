@@ -128,13 +128,15 @@
 
     <section class="floating__bar">
         <div class="floating__bar-left">
-            <button class="floating__bar-btn">Wind</button>
-            <button class="floating__bar-btn active">Facade</button>
-        </div>
+            <div class="floating__bar-left-button">
+                <button class="floating__bar-btn">Wind</button>
+                <button class="floating__bar-btn active">Facade</button>
+            </div>
 
-        <div class="floating__bar-middle">
-            <button class="floating__bar-btn">General</button>
-            <button class="floating__bar-btn">Define</button>
+            <div class="floating__bar-left-button">
+                <button class="floating__bar-btn">General</button>
+                <button class="floating__bar-btn">Define</button>
+            </div>
         </div>
 
         <div class="floating__bar-right">
@@ -146,42 +148,31 @@
 
     <section class="left__panel">
         <div class="catbar" aria-label="Categories">
-            <button class="catbar__btn" id="cat-number" type="button" data-title="Category" aria-label="Category">
-                1
-            </button>
-            
-            <button class="catbar__btn active" id="cat-number" type="button" data-title="Category" aria-label="Category">
-                2
-                <!-- dynamic category/items number -->
-            </button>
-
+            <!-- Category buttons will be dynamically created here -->
             <button class="catbar__btn" id="cat-add" type="button" data-title="Add Category" aria-label="Add Category">
                 <svg class="catbar__icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
             </button>
         </div>
 
-        <div class="input__box">
-            <div>
-                <h2>Category / Type Name</h2>
-            </div>
-            <div class="input__box-nav">
-                <button class="input__box-nav-btn active">Glass</button>
-                <button class="input__box-nav-btn">Frame</button>
-                <button class="input__box-nav-btn">Conn.</button>
-                <button class="input__box-nav-btn">Anchor.</button>
-            </div>
+        <div class="input__box" id="input-container">
+            <!-- Categories will be dynamically created here -->
         </div>
     </section>
-    <button class="left__panel-toggle-left"><</button>
+    <button class="left__panel-toggle-left" type="button" aria-label="Collapse left panel" data-title="Collapse left panel">
+        <svg class="panel__toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14.5 6.5L9 12l5.5 5.5"></path>
+        </svg>
+    </button>
+
 
     <section class="viewport__container">
 
     </section>
     
+
     <section class="right__panel">
         <div class="result__box">
             <h2>Design Summary</h2>
@@ -202,100 +193,22 @@
 
         </div>
     </section>
-    <button class="right__panel-toggle-right">></button>
+    <button class="right__panel-toggle-right" type="button" aria-label="Collapse right panel" data-title="Collapse right panel">
+        <svg class="panel__toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9.5 6.5L15 12l-5.5 5.5"></path>
+        </svg>
+    </button>
 
+    {% include "modals.html" %}
 
-
-
-
-
-
-    <!-- Error msg modal dialog -->
-    <dialog id="error-dialog" class="modal__warning">
-        <div class="modal__content">
-            <div class="modal__warning-icon">⚠️</div>
-            <p id="modal__warning-message"></p>
-            <button onclick="document.getElementById('error-dialog').close()">OK</button>
-        </div>
-    </dialog>
-
-    <!-- Input Helper Guide Popup -->
-    <div id="input-helper-modal" class="modal">
-        <div class="modal__content">
-            <div class="modal__header">
-                <h3>Input Guide</h3>
-                <span class="modal__close" id="close-input-helper">&times;</span>
-            </div>
-            <div class="modal__body">
-                <div id="input-helper-content">Loading...</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Calculator Popup -->
-    <div id="calculator-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="calculator-title">
-        <div class="modal__content-calculator">
-            <div class="modal__header">
-                <h3 id="calculator-title">Calculator</h3>
-                <span class="modal__close" id="close-calculator">&times;</span>
-            </div>
-            <div class="modal__body">
-                <div class="calc">
-                    <div class="calc__display" id="calc-display" aria-live="polite">0</div>
-                    <div class="calc__keys" id="calc-keys">
-                        <button type="button" class="calc__key calc__key-ac" data-key="AC">AC</button>
-                        <button type="button" class="calc__key calc__key-del" data-key="DEL">DEL</button>
-                        <button type="button" class="calc__key calc__key-op" data-key="(">(</button>
-                        <button type="button" class="calc__key calc__key-op" data-key=")">)</button>
-
-                        <button type="button" class="calc__key" data-key="7">7</button>
-                        <button type="button" class="calc__key" data-key="8">8</button>
-                        <button type="button" class="calc__key" data-key="9">9</button>
-                        <button type="button" class="calc__key calc__key-op" data-key="÷">÷</button>
-
-                        <button type="button" class="calc__key" data-key="4">4</button>
-                        <button type="button" class="calc__key" data-key="5">5</button>
-                        <button type="button" class="calc__key" data-key="6">6</button>
-                        <button type="button" class="calc__key calc__key-op" data-key="×">×</button>
-
-                        <button type="button" class="calc__key" data-key="1">1</button>
-                        <button type="button" class="calc__key" data-key="2">2</button>
-                        <button type="button" class="calc__key" data-key="3">3</button>
-                        <button type="button" class="calc__key calc__key-op" data-key="-">-</button>
-
-                        <button type="button" class="calc__key" data-key="0">0</button>
-                        <button type="button" class="calc__key" data-key=".">.</button>
-                        <button type="button" class="calc__key calc__key-eq" data-key="=">=</button>
-                        <button type="button" class="calc__key calc__key-op" data-key="+">+</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Glass Chart Modal -->
-    <div id="glass-chart-modal" class="modal">
-        <div class="modal__dialog">
-            <div class="modal__header">
-                <h2 class="modal__title">Glass Reference Chart</h2>
-                <button type="button" class="modal__close" aria-label="Close modal">
-                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </button>
-            </div>
-            <div class="modal__content">
-                <img id="glass-chart-image" src="" alt="Glass chart" style="display:none;">
-                <div id="glass-chart-loading" style="text-align: center; color: var(--text-secondary);">
-                    <p>Loading chart...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
-    <script src="/static/app.js"></script>
-    <!-- <script src="{{ url_for('static', filename='app.js') }}"></script> -->
-    <script src="{{ url_for('static', filename='calculator.js') }}"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/theme.js"></script>
+    <script src="/static/js/panelMode.js"></script>
+    <script src="/static/js/category.js"></script>
+    <!-- <script src="{{ url_for('static', filename='js/app.js') }}"></script> -->
+    <!-- <script src="{{ url_for('static', filename='js/theme.js') }}"></script> -->
+    <!-- <script src="{{ url_for('static', filename='js/panelMode.js') }}"></script> -->
+    <!-- <script src="{{ url_for('static', filename='js/category.js') }}"></script> -->
 
 </body>
 

@@ -9,9 +9,9 @@
     --topbar-height: 3.5rem;
     --floating-height: 2rem;
     --catbar-width: 3.8rem;
-    --input-field-width: 18.5rem;
+    --input-field-width: 20rem;
     --viewport-width: 60rem;
-    --result-width: 18rem;
+    --result-width: 20rem;
     --modal-width-max: 55rem;
     --modal-width-calculator: 18rem;
     --workspace-gap: 1rem;
@@ -25,7 +25,7 @@
 
     /* Light Theme - Background Colors */
     /* --bg-body: #eaeaea; */
-    --bg-body: #d2dff6;
+    --bg-body: #d1dcef;
     --bg-primary: #fff;
     --bg-secondary: #fafafa;
     --bg-preview: #fff8cc;
@@ -265,6 +265,23 @@ h2, h3, h4 {
 h2 {
     font-size: 1rem;
     margin-bottom: 1rem;
+}
+
+.input__category-heading {
+    outline: none;
+    cursor: text;
+    padding: 2px 4px;
+    border-radius: var(--radius-1);
+    transition: background-color 0.2s ease;
+}
+
+.input__category-heading:hover {
+    background-color: var(--bg-input);
+}
+
+.input__category-heading:focus {
+    background-color: var(--bg-input);
+    box-shadow: 0 0 0 2px var(--color-primary);
 }
 
 h3 {
@@ -797,28 +814,37 @@ body.theme__dark select {
 .floating__bar-middle,
 .floating__bar-right {
     position: fixed;
-    top: calc(var(--topbar-height) + 0.5rem);
+    top: calc(var(--topbar-height) + 0.35rem);
     display: flex;
     gap: 0.5rem;
     /* height: var(--floating-height); */
-    border-radius: var(--radius-3);
+    border-radius: var(--radius-2);
     background-color: var(--bg-primary);
     z-index: 10;
-    padding: 3px 6px;
+    padding: 2px 5px;
 }
 
 .floating__bar-left {
-    left: 1rem;
+    width: calc(var(--catbar-width) + var(--input-field-width));
+    background: transparent;
+    left: 0.5rem;
+    padding: 0;
+    justify-content: space-between;
 }
 
-.floating__bar-middle {
-    /* left: calc(var(--catbar-width) + var(--input-field-width) + 8rem); */
-    left: calc(var(--input-field-width) - 1rem);
-    transform: translateX(-45%);
+.floating__bar-left-button {
+    padding: 2px 5px;
+    background-color: var(--bg-primary);
+    border-radius: var(--radius-2);
 }
 
 .floating__bar-right {
     right: calc(var(--result-width) + 5rem);
+    /* transition: right 0.2s ease; */
+}
+
+.floating__bar-right.collapsed {
+    right: 5.5rem;
 }
 
 .floating__bar-btn {
@@ -826,7 +852,7 @@ body.theme__dark select {
     border: none;
     background: transparent;
     font-size: 0.8rem;
-    transition: color 0.2s;
+    /* transition: color 0.2s; */
     border-radius: 0;
 }
 
@@ -849,22 +875,53 @@ body.theme__dark select {
 /* leftbar */
 .left__panel {
     position: fixed;
-    top: calc(var(--topbar-height) + var(--floating-height) + 1rem);
-    left: 1rem;
-    bottom: 1rem;
+    top: calc(var(--topbar-height) + var(--floating-height) + 0.35rem);
+    left: 0.5rem;
+    bottom: 0.5rem;
     display: flex;
-    border-radius: var(--radius-4);
+    /* justify-content: space-between; */
+    border-radius: var(--radius-3);
     overflow: hidden;
+    z-index: 10;
 }
 
 .left__panel-toggle-left {
     position: fixed;
-    top: calc(var(--topbar-height) + var(--floating-height) + 3rem);
-    left: calc(var(--catbar-width) + var(--input-field-width) + 1rem);
+    top: calc(var(--topbar-height) + var(--floating-height) + 2rem);
+    left: calc(var(--catbar-width) + var(--input-field-width) + 0.5rem);
     background: var(--bg-primary);
-    padding: 0.4rem 0.65rem;
+    padding: 0.4rem;
     border-left: 1px solid var(--border-primary);
-    border-radius: 0 var(--radius-2) var(--radius-2) 0;
+    border-radius: 0 var(--radius-1) var(--radius-1) 0;
+    z-index: 20;
+    cursor: pointer;
+    pointer-events: auto;
+    /* transition: left 0.2s ease, var(--transition-bg), var(--transition-border); */
+}
+
+.left__panel-toggle-left.collapsed {
+    left: calc(var(--catbar-width) + 0.5rem);
+    border-left: none;
+}
+
+/* Wind mode: collapse button moves all the way to left without gap */
+.left__panel.wind-mode ~ .left__panel-toggle-left.collapsed {
+    left: 0rem;
+}
+
+.panel__toggle-icon {
+    width: 16px;
+    height: 16px;
+    stroke: var(--text-primary);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.2s ease, stroke 0.2s ease;
+}
+
+.left__panel-toggle-left.collapsed .panel__toggle-icon {
+    transform: rotate(180deg);
 }
 
 .catbar {
@@ -885,7 +942,7 @@ body.theme__dark select {
     font-size: 1rem;
     color: var(--color-primary);
     border: 1px solid var(--border-primary);
-    border-radius: var(--radius-3);
+    border-radius: var(--radius-2);
     background: transparent;
     cursor: pointer;
     transition: var(--transition-bg), var(--transition-border), transform 0.1s ease;
@@ -911,6 +968,51 @@ body.theme__dark select {
     stroke-linejoin: round;
 }
 
+.catbar__btn-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+#cat-add {
+    margin-top: auto;
+}
+
+.catbar__remove-btn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    z-index: 100;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    border-radius: 50%;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.catbar__remove-btn:hover {
+    color: var(--btn-danger);
+}
+
+.catbar__add-btn-container {
+    width: var(--catbar-width);
+    padding: 0.6rem;
+    background: var(--bg-primary);
+    border-right: 1px solid var(--border-primary);
+    border-top: 1px solid var(--border-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
 /* input field */
 .input__box {
@@ -918,12 +1020,19 @@ body.theme__dark select {
     /* box-shadow: 0 6px 16px var(--shadow-container); */
     width: var(--input-field-width);
     padding: 1rem 1rem;
-    transition: all 0.2s ease;
+    /* transition: all 0.2s ease; */
     overflow: hidden;
+    white-space: nowrap;
     bottom: 0;
 }
 
-.input__box.collapsed {
+/* Wind mode: expand input box to cover catbar + input field width */
+.left__panel.wind-mode .input__box {
+    width: calc(var(--catbar-width) + var(--input-field-width));
+}
+
+.input__box.collapsed,
+.left__panel.wind-mode .input__box.collapsed {
     width: 0;
     padding: 0;
     border-right: none;
@@ -961,6 +1070,27 @@ body.theme__dark select {
 .input__box-nav-btn.active {
     background-color: var(--bg-primary);
     border-radius: var(--radius-5);
+}
+
+.input__category-content {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.input__category-content.hidden {
+    display: none;
+}
+
+.input__tab-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    /* animation: fadeIn 0.3s ease; */
+}
+
+.input__tab-content.hidden {
+    display: none;
 }
 
 .input__field {
@@ -1116,22 +1246,40 @@ body.theme__dark select {
 /* result box */
 .right__panel {
     position: fixed;
-    top: calc(var(--topbar-height) + 1rem);
-    right: 1rem;
-    bottom: 1rem;
-    border-radius: var(--radius-4);
+    top: calc(var(--topbar-height) + 0.5rem);
+    right: 0.5rem;
+    bottom: 0.5rem;
+    border-radius: var(--radius-3);
     overflow: hidden;
     display: flex;
+    z-index: 10;
+    /* transition: right 0.2s ease; */
+}
+
+.right__panel.collapsed {
+    right: 0;
 }
 
 .right__panel-toggle-right {
     position: fixed;
-    top: calc(var(--topbar-height) + 3rem);
-    right: calc(var(--result-width) + 1rem);
+    top: calc(var(--topbar-height) + 2rem);
+    right: calc(var(--result-width) + 0.5rem);
     background: var(--bg-primary);
-    padding: 0.4rem 0.65rem;
+    padding: 0.4rem;
     border-right: 1px solid var(--border-primary);
-    border-radius: var(--radius-2) 0 0 var(--radius-2);
+    border-radius: var(--radius-1) 0 0 var(--radius-1);
+    z-index: 20;
+    cursor: pointer;
+    pointer-events: auto;
+    /* transition: right 0.2s ease, var(--transition-bg), var(--transition-border); */
+}
+
+.right__panel-toggle-right.collapsed {
+    right: 0;
+}
+
+.right__panel-toggle-right.collapsed .panel__toggle-icon {
+    transform: rotate(180deg);
 }
 
 .result__box {
@@ -1139,9 +1287,81 @@ body.theme__dark select {
     width: var(--result-width);
     padding: 1rem 1rem;
     transition: all 0.2s ease;
-    /* over/flow: hidden; */
+    white-space: nowrap;
+    /* overflow: hidden; */
+}
+
+.result__box.collapsed {
+    /* width: 0; */
+    /* padding: 0; */
+    display: none;
 }
 
 
+/* ================ WIND PANEL STYLES ================ */
+.wind__panel {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    overflow-y: auto;
+    max-height: calc(100vh - var(--topbar-height) - 2rem);
+}
 
+.wind__section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-3);
+    border: 1px solid var(--border-primary);
+    /* transition: var(--transition-bg), var(--transition-border); */
+}
 
+.wind__section-heading {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-heading);
+    margin: 0 0 0.5rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-primary);
+    /* transition: var(--transition-bg), var(--transition-border); */
+}
+
+.wind__actions {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem;
+}
+
+.wind__btn-calculate,
+.wind__btn-reset {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-2);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-bg);
+}
+
+.wind__btn-calculate {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+.wind__btn-calculate:hover {
+    background: var(--color-primary-hover);
+}
+
+.wind__btn-reset {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-primary);
+}
+
+.wind__btn-reset:hover {
+    background: var(--bg-input);
+}
